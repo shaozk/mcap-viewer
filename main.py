@@ -1,7 +1,10 @@
-from mcap.reader import make_reader, McapReader
+import sys
+from pathlib import Path
+
+from mcap.reader import McapReader, make_reader
+from PyQt6.QtWidgets import QApplication, QMainWindow
 
 from src.utils.json_util import dumps_json
-from pathlib import Path
 
 
 def process_attachments(reader: McapReader):
@@ -27,7 +30,9 @@ def process_schemas(reader: McapReader):
     for schema, channel, message in reader.iter_messages():
         print(schema.name, schema.encoding, schema.id)
         print(channel.topic, channel.schema_id, channel.message_encoding, channel.id)
-        print(message.log_time, message.publish_time, message.channel_id, message.sequence)
+        print(
+            message.log_time, message.publish_time, message.channel_id, message.sequence
+        )
 
 
 def main():
@@ -47,4 +52,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    app = QApplication(sys.argv)
+    window = QMainWindow()
+    window.show()
+    sys.exit(app.exec())

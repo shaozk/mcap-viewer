@@ -20,12 +20,12 @@ repos:
         name: ruff-check
         language: system
         types: [python]
-        entry: poetry run ruff check --force-exclude --no-cache
+        entry: poetry run ruff check --force-exclude --no-cache --fix
         exclude: ^src/models/
       - id: mypy
-        name: run mypy check for "src"
+        name: run mypy check for "mcap_viewer"
         language: system
         types: [python]
         pass_filenames: false
-        entry: bash -c "poetry run mypy ./src --config-file=./pyproject.toml"
+        entry: bash -c "poetry run mypy ./mcap_viewer --config-file=./pyproject.toml"
         exclude: ^src/models

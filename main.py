@@ -1,10 +1,8 @@
-import sys
 from pathlib import Path
 
 from mcap.reader import McapReader, make_reader
-from PyQt6.QtWidgets import QApplication, QMainWindow
 
-from src.utils.json_util import dumps_json
+from mcap_viewer.utils.json_util import dumps_json
 
 
 def process_attachments(reader: McapReader):
@@ -37,7 +35,7 @@ def process_schemas(reader: McapReader):
 
 def main():
     print("Hello from mcap-viewer!")
-    mcap_path = "/home/mini/data/mcap/019afdfe-907a-73da-71c4-9d50e21091ad.mcap"
+    mcap_path = "/Users/shaozk/data/mcap/019a44db-f039-77e6-7eb3-82a84434c193.mcap"
     with open(mcap_path, "rb") as f:
         reader = make_reader(f)
         summary = reader.get_summary()
@@ -52,7 +50,4 @@ def main():
 
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = QMainWindow()
-    window.show()
-    sys.exit(app.exec())
+    main()

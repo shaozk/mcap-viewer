@@ -1,5 +1,5 @@
-import os
 import json
+import os
 
 
 def json_to_string(json_data):
@@ -11,7 +11,7 @@ def load_json(fp, nullable=True, default=None):
         return default
     elif not os.path.exists(fp):
         raise FileNotFoundError(fp)
-    with open(fp, 'r') as fr:
+    with open(fp, "r") as fr:
         text = fr.read().strip()
         if not text:
             return default
@@ -24,7 +24,7 @@ def load_json(fp, nullable=True, default=None):
 
 
 def save_json(data, fname):
-    with open(fname, 'w') as f:
+    with open(fname, "w") as f:
         if isinstance(data, str):
             text = data
         else:

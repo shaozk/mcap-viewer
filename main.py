@@ -26,11 +26,11 @@ def process_metadata(reader: McapReader):
 
 def process_schemas(reader: McapReader):
     for schema, channel, message in reader.iter_messages():
-        print(schema.name, schema.encoding, schema.id)
+        # print(schema.name, schema.encoding, schema.id)
         print(channel.topic, channel.schema_id, channel.message_encoding, channel.id)
-        print(
-            message.log_time, message.publish_time, message.channel_id, message.sequence
-        )
+        # print(
+        #     message.log_time, message.publish_time, message.channel_id, message.sequence
+        # )
 
 
 def main():
@@ -38,15 +38,16 @@ def main():
     mcap_path = "/Users/shaozk/data/mcap/019a44db-f039-77e6-7eb3-82a84434c193.mcap"
     with open(mcap_path, "rb") as f:
         reader = make_reader(f)
-        summary = reader.get_summary()
-        print(summary)
-
         header = reader.get_header()
-        print(header)
+        summary = reader.get_summary()
+        print(summary.statistics)
+        print(summary.channels)
+        # for schema, channel, message in reader.iter_messages():
+        #    print(f"{channel.topic} ({schema.name})")
 
         # process_attachments(reader)
         # process_metadata(reader)
-        process_schemas(reader)
+        # process_schemas(reader)
 
 
 if __name__ == "__main__":

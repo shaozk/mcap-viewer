@@ -3,9 +3,10 @@ from PyQt6.QtCore import QSettings
 from PyQt6.QtGui import QAction
 from PyQt6.QtWidgets import (
     QFileDialog,
-    QLabel,
     QMainWindow,
     QMenu,
+    QTableWidget,
+    QTableWidgetItem,
     QToolBar,
 )
 
@@ -23,8 +24,14 @@ class MainWindow(QMainWindow):
         self.addToolBar(self.tool_bar)
         self.about_window = AboutWindow()
 
+        self.table_widget = QTableWidget()
+        self.table_widget.setAlternatingRowColors(True)
+        self.table_widget.setShowGrid(True)
+
         self._set_file_menu()
         self._set_help_menu()
+
+        self.setCentralWidget(self.table_widget)
 
     def _set_menu_bar(self):
         pass
@@ -78,9 +85,12 @@ class MainWindow(QMainWindow):
         with open(mcap_path, "rb") as f:
             reader = make_reader(f)
             summary = reader.get_summary()
-            print(summary)
-            self.label = QLabel("summary")
-            self.setCentralWidget(self.label)
+            self.table_widget.setColumnCount(2)
+            self.table_widget.setRowCount(len(summary.channels))
+            self.table_widget.setHorizontalHeaderLabels(["Topic Name", "DataType"])
+            for cid in summary.channels:
+                topic = summary.channels[cid].topic
+                self.table_widget.setItem(cid, 0, QTableWidgetItem(topic))
 
     def open_new_window(self):
         self.new_window = MainWindow()

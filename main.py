@@ -33,6 +33,52 @@ def process_schemas(reader: McapReader):
         # )
 
 
+def print_statistics(stat):
+    print(f"attachment_count: {stat.attachment_count}")
+    print(f"channel_count: {stat.channel_count}")
+    print(f"chunk_count: {stat.chunk_count}")
+    print(f"message_count: {stat.message_count}")
+    print(f"message_start_time : {stat.message_start_time}")
+    print(f"message_end_time: {stat.message_end_time}")
+    print(f"metadata_count: {stat.metadata_count}")
+    print(f"schema_count: {stat.schema_count}")
+    for id, count in stat.channel_message_counts.items():
+        print(f"channel {id}: {count}")
+
+
+def print_channels(channels):
+    for id, channel in channels.items():
+        print(f"== id: {id} ==")
+        print(f"id: {channel.id}")
+        print(f"topic: {channel.topic}")
+        print(f"message_encoding: {channel.message_encoding}")
+        print(f"metadata: {channel.metadata}")
+        print(f"schema_id: {channel.schema_id}")
+
+
+def print_schemas(schemas):
+    for id, schema in schemas.items():
+        print(f"== id: {id} ==")
+        print(f"id: {schema.id}")
+        print(f"data: {schema.data}")
+        print(f"encoding: {schema.encoding}")
+        print(f"name: {schema.name}")
+
+
+def print_chunk_indexs(chunk_indexes):
+    for index, ci in enumerate(chunk_indexes):
+        print(f"== {index} ==")
+        print(f"chunk_length: {ci.chunk_length}")
+        print(f"chunk_start_offset: {ci.chunk_start_offset}")
+        print(f"compression: {ci.compression}")
+        print(f"compressed_size: {ci.compressed_size}")
+        print(f"message_end_time: {ci.message_end_time}")
+        print(f"message_index_length: {ci.message_index_length}")
+        print(f"message_index_offsets: {ci.message_index_offsets}")
+        print(f"message_start_time: {ci.message_start_time}")
+        print(f"uncompressed_size: {ci.uncompressed_size}")
+
+
 def main():
     print("Hello from mcap-viewer!")
     mcap_path = "/Users/shaozk/data/mcap/019a44db-f039-77e6-7eb3-82a84434c193.mcap"
@@ -40,8 +86,11 @@ def main():
         reader = make_reader(f)
         header = reader.get_header()
         summary = reader.get_summary()
-        print(summary.statistics)
-        print(summary.channels)
+        # print_statistics(summary.statistics)  # print(summary.channels)
+        # print_channels(summary.channels)
+        # print_schemas(summary.schemas)
+        print_chunk_indexs(summary.chunk_indexes)
+        # print(summary.schemas)
         # for schema, channel, message in reader.iter_messages():
         #    print(f"{channel.topic} ({schema.name})")
 

@@ -85,12 +85,18 @@ class MainWindow(QMainWindow):
         with open(mcap_path, "rb") as f:
             reader = make_reader(f)
             summary = reader.get_summary()
-            self.table_widget.setColumnCount(2)
+            self.table_widget.setColumnCount(3)
             self.table_widget.setRowCount(len(summary.channels))
-            self.table_widget.setHorizontalHeaderLabels(["Topic Name", "DataType"])
-            for cid in summary.channels:
+            self.table_widget.setHorizontalHeaderLabels(
+                ["Topic Name", "DataType", "Message Count"]
+            )
+            for cid, count in summary.statistics.channel_message_counts.items():
                 topic = summary.channels[cid].topic
+                sid = summary.channels[cid].schema_id
+                datatype = summary.schemas[sid].name
                 self.table_widget.setItem(cid, 0, QTableWidgetItem(topic))
+                self.table_widget.setItem(cid, 1, QTableWidgetItem(datatype))
+                self.table_widget.setItem(cid, 2, QTableWidgetItem(str(count)))
 
     def open_new_window(self):
         self.new_window = MainWindow()

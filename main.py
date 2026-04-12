@@ -18,7 +18,8 @@ def process_attachments(reader: McapReader):
 
 
 def process_metadata(reader: McapReader):
-    for metadata in reader.iter_metadata():
+    for index, metadata in enumerate(reader.iter_metadata()):
+        print(f"index: {index}")
         print(f"数据名称: {metadata.name}")
         print(f"数据大小: {len(metadata.metadata)} 字节")
         print(f"数据: {dumps_json(metadata.metadata)}")
@@ -79,23 +80,25 @@ def print_chunk_indexs(chunk_indexes):
         print(f"uncompressed_size: {ci.uncompressed_size}")
 
 
+def print_summary(reader):
+    summary = reader.get_summary()
+    # print_statistics(summary.statistics)  # print(summary.channels)
+    # print_channels(summary.channels)
+    # print_schemas(summary.schemas)
+    print_chunk_indexs(summary.chunk_indexes)
+    # print(summary.schemas)
+    # for schema, channel, message in reader.iter_messages():
+    #    print(f"{channel.topic} ({schema.name})")
+
+
 def main():
     print("Hello from mcap-viewer!")
     mcap_path = "/Users/shaozk/data/mcap/019a44db-f039-77e6-7eb3-82a84434c193.mcap"
     with open(mcap_path, "rb") as f:
         reader = make_reader(f)
-        header = reader.get_header()
-        summary = reader.get_summary()
-        # print_statistics(summary.statistics)  # print(summary.channels)
-        # print_channels(summary.channels)
-        # print_schemas(summary.schemas)
-        print_chunk_indexs(summary.chunk_indexes)
-        # print(summary.schemas)
-        # for schema, channel, message in reader.iter_messages():
-        #    print(f"{channel.topic} ({schema.name})")
 
         # process_attachments(reader)
-        # process_metadata(reader)
+        process_metadata(reader)
         # process_schemas(reader)
 
 
